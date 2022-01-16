@@ -1,3 +1,5 @@
+package com.pravin.assignments;
+
 public class Contact {
     private String firstName;
     private String lastName;
