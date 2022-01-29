@@ -1,5 +1,7 @@
 package com.pravin.assignments;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -12,7 +14,8 @@ import static java.lang.System.exit;
 public class AddressBookMain {
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
-        Contact contact = new Contact();
+        List<Contact> contactList = new ArrayList<Contact>();
+        //Contact contact = new Contact();
         int option = 3;
 
         while (option != 5) {
@@ -20,22 +23,22 @@ public class AddressBookMain {
                     "1. Create a  Contact\n" +
                     "2. Update a Contact \n" +
                     "3. Delete a Contact \n" +
-                    "4. Print Contact \n" +
+                    "4. Print All Contacts \n" +
                     "5. exit");
             Scanner scanner = new Scanner(System.in);
             option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    option1(contact);
+                    option1(contactList);
                     break;
                 case 2:
-                    option2(contact);
+                    option2(contactList);
                     break;
                 case 3:
-                    option3(contact);
+                    option3(contactList);
                     break;
                 case 4:
-                    option4(contact);
+                    option4(contactList);
                     break;
                 case 5:
                     exit(0);
@@ -43,28 +46,32 @@ public class AddressBookMain {
         }
     }
 
-    private static void option4(Contact contact) {
-        if (null==contact.getFirstName()) {
-            System.out.println("No Contact details exist");
-        } else {
-            System.out.println(contact);
+    private static void option4(List<Contact> contactList) {
+        if(contactList.size()==0)
+            System.out.println("No Contacts exist");
+        for(Contact contact:contactList){
+                System.out.println(contact);
         }
+
     }
 
 
     /**
-     * @param contact
+     * @param contactList
      */
-    private static void option3(Contact contact) {
+    private static void option3(List<Contact> contactList) {
         System.out.println("Delete a Contact");
         System.out.println("Enter Contact First Name to edit");
         Scanner scanner = new Scanner(System.in);
         String firstName = scanner.nextLine();
-        if (firstName.equals(contact.getFirstName())) {
-            contact = deleteContact(contact);
-        } else {
-            System.out.println("Contact Doesn't exist");
+        for(Contact contact:contactList){
+            if (firstName.equals(contact.getFirstName())) {
+                contactList.remove(contact);
+            } else {
+                System.out.println("Contact Doesn't exist");
+            }
         }
+
 
     }
 
@@ -73,34 +80,39 @@ public class AddressBookMain {
     }
 
     /**
-     * @param contact
+     * @param contactList
      */
-    private static void option2(Contact contact) {
+    private static void option2(List<Contact> contactList) {
         System.out.println("Update a Contact");
         System.out.println("Enter Contact First Name to edit");
         Scanner scanner = new Scanner(System.in);
         String firstName = scanner.nextLine();
-        if (firstName.equals(contact.getFirstName())) {
-            contact = getContact(contact);
-        } else {
-            System.out.println("Contact Doesn't exist");
+        for (Contact contact:contactList){
+            if (firstName.equals(contact.getFirstName())) {
+                contactList.remove(contact);
+                contactList.add(getContact());
+            } else {
+                System.out.println("Contact Doesn't exist");
+            }
         }
+
     }
 
     /**
-     * @param contact
+     * @param contactList
      */
-    private static void option1(Contact contact) {
+    private static void option1(List<Contact> contactList) {
         System.out.println("Create a Contact");
-        contact = getContact(contact);
+        contactList.add(getContact());
     }
 
     /**
-     * @param contact
+     * @param
      * @return
      */
-    private static Contact getContact(Contact contact) {
+    private static Contact getContact() {
         Scanner scanner = new Scanner(System.in);
+        Contact contact = new Contact();
         System.out.println("Enter First Name");
         contact.setFirstName(scanner.nextLine());
         System.out.println("Enter Last Name");
