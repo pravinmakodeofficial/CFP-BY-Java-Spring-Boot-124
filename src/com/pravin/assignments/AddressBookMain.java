@@ -1,6 +1,7 @@
 package com.pravin.assignments;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.System.exit;
 
@@ -24,7 +25,9 @@ public class AddressBookMain {
                     "2. Update a Contact \n" +
                     "3. Delete a Contact \n" +
                     "4. Print All Contacts \n" +
-                    "5. exit");
+                    "5. Search contact in State \n" +
+                    "6. Search contact in City \n" +
+                    "7. exit");
             Scanner scanner = new Scanner(System.in);
             option = scanner.nextInt();
             switch (option) {
@@ -41,9 +44,44 @@ public class AddressBookMain {
                     option4(addressBook);
                     break;
                 case 5:
+                    option5(addressBook);
+                    break;
+                case 6:
+                    option6(addressBook);
+                    break;
+                case 7:
                     exit(0);
             }
         }
+    }
+
+    private static void option6(Map<String, List<Contact>> addressBook) {
+        System.out.println("Search Contact in City");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter City Name to Search");
+        String cityName = scanner.nextLine();
+
+        Collection<List<Contact>> contactList = addressBook.values();
+        contactList.forEach(contacts -> contacts.forEach(contact -> {
+            if (contact.getCity().equals(cityName)) {
+                System.out.println(contact);
+            }
+        }));
+
+    }
+
+    private static void option5(Map<String, List<Contact>> addressBook) {
+        System.out.println("Search Contact in State");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter State Name to Search");
+        String stateName = scanner.nextLine();
+
+        Collection<List<Contact>> contactList = addressBook.values();
+        contactList.forEach(contacts -> contacts.forEach(contact -> {
+            if (contact.getState().equals(stateName)) {
+                System.out.println(contact);
+            }
+        }));
     }
 
     private static void option4(Map<String, List<Contact>> addressBook) {
