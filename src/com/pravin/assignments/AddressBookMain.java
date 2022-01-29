@@ -1,12 +1,11 @@
 package com.pravin.assignments;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.System.exit;
 
-/** Class to Create and Save Address Book
+/**
+ * Class to Create and Save Address Book
  * for Contacts. This class displays a menu option in
  * console to Print an existing contact or Create/Update
  * a Contact.
@@ -14,7 +13,8 @@ import static java.lang.System.exit;
 public class AddressBookMain {
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
-        List<Contact> contactList = new ArrayList<Contact>();
+        Map<String, List<Contact>> addressBook = new HashMap<String, List<Contact>>();
+
         //Contact contact = new Contact();
         int option = 3;
 
@@ -29,16 +29,16 @@ public class AddressBookMain {
             option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    option1(contactList);
+                    option1(addressBook);
                     break;
                 case 2:
-                    option2(contactList);
+                    option2(addressBook);
                     break;
                 case 3:
-                    option3(contactList);
+                    option3(addressBook);
                     break;
                 case 4:
-                    option4(contactList);
+                    option4(addressBook);
                     break;
                 case 5:
                     exit(0);
@@ -46,32 +46,50 @@ public class AddressBookMain {
         }
     }
 
-    private static void option4(List<Contact> contactList) {
-        if(contactList.size()==0)
-            System.out.println("No Contacts exist");
-        for(Contact contact:contactList){
-                System.out.println(contact);
+    private static void option4(Map<String, List<Contact>> addressBook) {
+        if (addressBook.size() == 0) {
+            System.out.println("No Address Book exist");
+        } else {
+            for (Map.Entry<String, List<Contact>> entry : addressBook.entrySet()) {
+                List<Contact> contactList = entry.getValue();
+                if (contactList.size() == 0) {
+                    System.out.println("No Contact List exist for Address Book " + entry.getKey());
+                } else {
+
+                    for (Contact contact : contactList) {
+                        System.out.println(contact);
+
+                    }
+                }
+            }
         }
 
     }
 
 
     /**
-     * @param contactList
+     * @param addressBook
      */
-    private static void option3(List<Contact> contactList) {
-        System.out.println("Delete a Contact");
-        System.out.println("Enter Contact First Name to edit");
+    private static void option3(Map<String, List<Contact>> addressBook) {
+        System.out.println("Update a Contact");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter AddressBook to edit");
+        String addressBookName = scanner.nextLine();
+        System.out.println("Enter Contact First Name to edit");
         String firstName = scanner.nextLine();
-        for(Contact contact:contactList){
-            if (firstName.equals(contact.getFirstName())) {
-                contactList.remove(contact);
-            } else {
-                System.out.println("Contact Doesn't exist");
+
+        for (Map.Entry<String, List<Contact>> entry : addressBook.entrySet()) {
+            if (entry.getKey().equals(addressBookName)) {
+                List<Contact> contactList = entry.getValue();
+                for (Contact contact : contactList) {
+                    if (firstName.equals(contact.getFirstName())) {
+                        contactList.remove(contact);
+                    } else {
+                        System.out.println("Contact Doesn't exist");
+                    }
+                }
             }
         }
-
 
     }
 
@@ -80,30 +98,45 @@ public class AddressBookMain {
     }
 
     /**
-     * @param contactList
+     * @param addressBook
      */
-    private static void option2(List<Contact> contactList) {
+    private static void option2(Map<String, List<Contact>> addressBook) {
         System.out.println("Update a Contact");
-        System.out.println("Enter Contact First Name to edit");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter AddressBook to edit");
+        String addressBookName = scanner.nextLine();
+        System.out.println("Enter Contact First Name to edit");
         String firstName = scanner.nextLine();
-        for (Contact contact:contactList){
-            if (firstName.equals(contact.getFirstName())) {
-                contactList.remove(contact);
-                contactList.add(getContact());
-            } else {
-                System.out.println("Contact Doesn't exist");
+
+        for (Map.Entry<String, List<Contact>> entry : addressBook.entrySet()) {
+            if (entry.getKey().equals(addressBookName)) {
+                List<Contact> contactList = entry.getValue();
+                for (Contact contact : contactList) {
+                    if (firstName.equals(contact.getFirstName())) {
+                        contactList.remove(contact);
+                        contactList.add(getContact());
+                    } else {
+                        System.out.println("Contact Doesn't exist");
+                    }
+                }
             }
         }
+
 
     }
 
     /**
-     * @param contactList
+     * @param addressBook
      */
-    private static void option1(List<Contact> contactList) {
-        System.out.println("Create a Contact");
+    private static void option1(Map<String, List<Contact>> addressBook) {
+        System.out.println("Create a Contact for Address Book");
+        List<Contact> contactList = new ArrayList<Contact>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Address Book Name");
+        String addressBookName = scanner.nextLine();
         contactList.add(getContact());
+        addressBook.put(addressBookName, contactList);
+
     }
 
     /**
