@@ -12,10 +12,11 @@ import static java.lang.System.exit;
  * a Contact.
  */
 public class AddressBookMain {
+    static Map<String, List<Contact>> addressBook = new HashMap<String, List<Contact>>();
+    static Map<String, List<Contact>> cityAddressBook = new HashMap<String, List<Contact>>();
+    static Map<String, List<Contact>> stateAddressBook = new HashMap<String, List<Contact>>();
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
-        Map<String, List<Contact>> addressBook = new HashMap<String, List<Contact>>();
-
         //Contact contact = new Contact();
         int option = 3;
 
@@ -101,6 +102,28 @@ public class AddressBookMain {
                 }
             }
         }
+        for (Map.Entry<String, List<Contact>> entry : cityAddressBook.entrySet()) {
+            System.out.println("Address Book for City "+entry.getKey());
+            List<Contact> contactList = entry.getValue();
+            if (contactList.size() == 0) {
+                System.out.println("No Contact List exist for City " + entry.getKey());
+            } else {
+                for (Contact contact : contactList) {
+                    System.out.println(contact);
+                }
+            }
+        }
+        for (Map.Entry<String, List<Contact>> entry : stateAddressBook.entrySet()) {
+            System.out.println("Address Book for State "+entry.getKey());
+            List<Contact> contactList = entry.getValue();
+            if (contactList.size() == 0) {
+                System.out.println("No Contact List exist for State " + entry.getKey());
+            } else {
+                for (Contact contact : contactList) {
+                    System.out.println(contact);
+                }
+            }
+        }
 
     }
 
@@ -178,8 +201,11 @@ public class AddressBookMain {
             if (!contactList.isEmpty()) {
                 boolean contactExist = contactList.stream().anyMatch(contact -> contact.getFirstName().equals(firstName));
                 if (!contactExist) {
-                    contactList.add(getContact());
+                    Contact contact = getContact();
+                    contactList.add(contact);
                     addressBook.put(addressBookName, contactList);
+                    cityAddressBook.put(contact.getCity(),contactList);
+                    stateAddressBook.put(contact.getState(),contactList);
                 } else {
                     System.out.println("Contact Already Exist");
                 }
@@ -192,8 +218,11 @@ public class AddressBookMain {
             List<Contact> contactList = new ArrayList<Contact>();
 
             System.out.println("Contact Does not exist .. ");
-            contactList.add(getContact());
+            Contact contact = getContact();
+            contactList.add(contact);
             addressBook.put(addressBookName, contactList);
+            cityAddressBook.put(contact.getState(),contactList);
+            stateAddressBook.put(contact.getState(),contactList);
         }
 
 
