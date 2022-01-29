@@ -130,12 +130,34 @@ public class AddressBookMain {
      */
     private static void option1(Map<String, List<Contact>> addressBook) {
         System.out.println("Create a Contact for Address Book");
-        List<Contact> contactList = new ArrayList<Contact>();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Address Book Name");
         String addressBookName = scanner.nextLine();
-        contactList.add(getContact());
-        addressBook.put(addressBookName, contactList);
+        System.out.println("Enter First Name");
+        String firstName = scanner.nextLine();
+        if (addressBook.containsKey(addressBookName)) {
+            List<Contact> contactList = addressBook.get(addressBookName);
+            if (!contactList.isEmpty()) {
+                boolean contactExist = contactList.stream().anyMatch(contact -> contact.getFirstName().equals(firstName));
+                if (!contactExist) {
+                    contactList.add(getContact());
+                    addressBook.put(addressBookName, contactList);
+                } else {
+                    System.out.println("Contact Already Exist");
+                }
+            } else {
+                System.out.println("Contact Does not exist .. ");
+                contactList.add(getContact());
+                addressBook.put(addressBookName, contactList);
+            }
+        } else {
+            List<Contact> contactList = new ArrayList<Contact>();
+
+            System.out.println("Contact Does not exist .. ");
+            contactList.add(getContact());
+            addressBook.put(addressBookName, contactList);
+        }
+
 
     }
 
